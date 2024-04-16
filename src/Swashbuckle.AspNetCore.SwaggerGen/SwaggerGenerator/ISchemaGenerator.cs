@@ -10,8 +10,8 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
         OpenApiSchema GenerateSchema(
             Type modelType,
             SchemaRepository schemaRepository,
-            MemberInfo memberInfo = null,
-            ParameterInfo parameterInfo = null,
-            ApiParameterRouteInfo routeInfo = null);
+            MemberInfo? memberInfo = null,
+            ParameterInfo? parameterInfo = null,
+            ApiParameterRouteInfo? routeInfo = null);
     }
 }

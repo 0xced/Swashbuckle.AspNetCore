@@ -18,7 +18,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
         private readonly IApiDescriptionGroupCollectionProvider _apiDescriptionsProvider;
         private readonly ISchemaGenerator _schemaGenerator;
         private readonly SwaggerGeneratorOptions _options;
-        private readonly IAuthenticationSchemeProvider _authenticationSchemeProvider;
+        private readonly IAuthenticationSchemeProvider? _authenticationSchemeProvider;
 
         public SwaggerGenerator(
             SwaggerGeneratorOptions options,
@@ -39,7 +39,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
             _authenticationSchemeProvider = authenticationSchemeProvider;
         }
 
-        public async Task<OpenApiDocument> GetSwaggerAsync(string documentName, string host = null, string basePath = null)
+        public async Task<OpenApiDocument> GetSwaggerAsync(string documentName, string? host = null, string? basePath = null)
         {
             var (applicableApiDescriptions, swaggerDoc, schemaRepository) = GetSwaggerDocumentWithoutFilters(documentName, host, basePath);
 
@@ -57,7 +57,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
             return swaggerDoc;
         }
 
-        public OpenApiDocument GetSwagger(string documentName, string host = null, string basePath = null)
+        public OpenApiDocument GetSwagger(string documentName, string? host = null, string? basePath = null)
         {
             var (applicableApiDescriptions, swaggerDoc, schemaRepository) = GetSwaggerDocumentWithoutFilters(documentName, host, basePath);
 
@@ -75,9 +75,9 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
             return swaggerDoc;
         }
 
-        private (IEnumerable<ApiDescription>, OpenApiDocument, SchemaRepository) GetSwaggerDocumentWithoutFilters(string documentName, string host = null, string basePath = null)
+        private (IEnumerable<ApiDescription>, OpenApiDocument, SchemaRepository) GetSwaggerDocumentWithoutFilters(string documentName, string? host = null, string? basePath = null)
         {
-            if (!_options.SwaggerDocs.TryGetValue(documentName, out OpenApiInfo info))
+            if (!_options.SwaggerDocs.TryGetValue(documentName, out OpenApiInfo? info))
                 throw new UnknownSwaggerDocument(documentName, _options.SwaggerDocs.Select(d => d.Key));
 
             var applicableApiDescriptions = _apiDescriptionsProvider.ApiDescriptionGroups.Items
@@ -132,7 +132,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
                     });
         }
 
-        private IList<OpenApiServer> GenerateServers(string host, string basePath)
+        private IList<OpenApiServer> GenerateServers(string? host, string? basePath)
         {
             if (_options.Servers.Any())
             {
@@ -215,7 +215,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
                     Deprecated = apiDescription.CustomAttributes().OfType<ObsoleteAttribute>().Any()
                 };
 
-                apiDescription.TryGetMethodInfo(out MethodInfo methodInfo);
+                apiDescription.TryGetMethodInfo(out MethodInfo? methodInfo);
                 var filterContext = new OperationFilterContext(apiDescription, _schemaGenerator, schemaRepository, methodInfo);
                 foreach (var filter in _options.OperationFilters)
                 {
@@ -232,7 +232,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
             }
         }
 
-        private OpenApiOperation GenerateOpenApiOperationFromMetadata(ApiDescription apiDescription, SchemaRepository schemaRepository)
+        private OpenApiOperation? GenerateOpenApiOperationFromMetadata(ApiDescription apiDescription, SchemaRepository schemaRepository)
         {
 #if NET6_0_OR_GREATER
             var metadata = apiDescription.ActionDescriptor?.EndpointMetadata;
@@ -279,7 +279,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
             {
                 var response = kvp.Value;
                 var responseModel = apiDescription.SupportedResponseTypes.SingleOrDefault(desc => desc.StatusCode.ToString() == kvp.Key);
-                if (responseModel is not null)
+                if (responseModel?.Type is not null)
                 {
                     var responseContentTypes = response?.Content?.Values;
                     if (responseContentTypes is not null)
@@ -369,9 +369,9 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
         private OpenApiSchema GenerateSchema(
             Type type,
             SchemaRepository schemaRepository,
-            PropertyInfo propertyInfo = null,
-            ParameterInfo parameterInfo = null,
-            ApiParameterRouteInfo routeInfo = null)
+            PropertyInfo? propertyInfo = null,
+            ParameterInfo? parameterInfo = null,
+            ApiParameterRouteInfo? routeInfo = null)
         {
             try
             {
@@ -389,8 +389,8 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
             ApiDescription apiDescription,
             SchemaRepository schemaRepository)
         {
-            OpenApiRequestBody requestBody = null;
-            RequestBodyFilterContext filterContext = null;
+            OpenApiRequestBody? requestBody = null;
+            RequestBodyFilterContext? filterContext = null;
 
             var bodyParameter = apiDescription.ParameterDescriptions
                 .FirstOrDefault(paramDesc => paramDesc.IsFromBody());
@@ -404,7 +404,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
 
                 filterContext = new RequestBodyFilterContext(
                     bodyParameterDescription: bodyParameter,
-                    formParameterDescriptions: null,
+                    formParameterDescriptions: [],
                     schemaGenerator: _schemaGenerator,
                     schemaRepository: schemaRepository);
             }

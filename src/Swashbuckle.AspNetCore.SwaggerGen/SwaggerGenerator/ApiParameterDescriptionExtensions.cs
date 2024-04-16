@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -45,7 +45,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
 #endif
         }
 
-        public static ParameterInfo ParameterInfo(this ApiParameterDescription apiParameter)
+        public static ParameterInfo? ParameterInfo(this ApiParameterDescription apiParameter)
         {
             var parameterDescriptor = apiParameter.ParameterDescriptor as
 #if NETCOREAPP2_2_OR_GREATER
@@ -57,13 +57,11 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
             return parameterDescriptor?.ParameterInfo;
         }
 
-        public static PropertyInfo PropertyInfo(this ApiParameterDescription apiParameter)
+        public static PropertyInfo? PropertyInfo(this ApiParameterDescription apiParameter)
         {
             var modelMetadata = apiParameter.ModelMetadata;
 
-            return (modelMetadata?.ContainerType != null)
-                ? modelMetadata.ContainerType.GetProperty(modelMetadata.PropertyName)
-                : null;
+            return modelMetadata?.ContainerType?.GetProperty(modelMetadata.PropertyName ?? "");
         }
 
         public static IEnumerable<object> CustomAttributes(this ApiParameterDescription apiParameter)
@@ -81,8 +79,8 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
         internal static void GetAdditionalMetadata(
             this ApiParameterDescription apiParameter,
             ApiDescription apiDescription,
-            out ParameterInfo parameterInfo,
-            out PropertyInfo propertyInfo,
+            out ParameterInfo? parameterInfo,
+            out PropertyInfo? propertyInfo,
             out IEnumerable<object> parameterOrPropertyAttributes)
         {
             parameterInfo = apiParameter.ParameterInfo();

@@ -13,7 +13,7 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         public static IServiceCollection AddSwaggerGen(
             this IServiceCollection services,
-            Action<SwaggerGenOptions> setupAction = null)
+            Action<SwaggerGenOptions>? setupAction = null)
         {
             // Add Mvc convention to ensure ApiExplorer is enabled for all actions
             services.Configure<MvcOptions>(c =>

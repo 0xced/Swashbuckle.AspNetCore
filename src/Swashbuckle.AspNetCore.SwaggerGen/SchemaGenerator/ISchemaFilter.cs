@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reflection;
 using Microsoft.OpenApi.Models;
 
@@ -15,8 +15,8 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
             Type type,
             ISchemaGenerator schemaGenerator,
             SchemaRepository schemaRepository,
-            MemberInfo memberInfo = null,
-            ParameterInfo parameterInfo = null)
+            MemberInfo? memberInfo = null,
+            ParameterInfo? parameterInfo = null)
         {
             Type = type;
             SchemaGenerator = schemaGenerator;
@@ -31,10 +31,10 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
 
         public SchemaRepository SchemaRepository { get; }
 
-        public MemberInfo MemberInfo { get; }
+        public MemberInfo? MemberInfo { get; }
 
-        public ParameterInfo ParameterInfo { get; }
+        public ParameterInfo? ParameterInfo { get; }
 
-        public string DocumentName => SchemaRepository.DocumentName;
+        public string? DocumentName => SchemaRepository.DocumentName;
     }
 }

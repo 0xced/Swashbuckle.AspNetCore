@@ -28,9 +28,9 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
         public OpenApiSchema GenerateSchema(
             Type modelType,
             SchemaRepository schemaRepository,
-            MemberInfo memberInfo = null,
-            ParameterInfo parameterInfo = null,
-            ApiParameterRouteInfo routeInfo = null)
+            MemberInfo? memberInfo = null,
+            ParameterInfo? parameterInfo = null,
+            ApiParameterRouteInfo? routeInfo = null)
         {
             if (memberInfo != null)
                 return GenerateSchemaForMember(modelType, schemaRepository, memberInfo);
@@ -45,7 +45,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
             Type modelType,
             SchemaRepository schemaRepository,
             MemberInfo memberInfo,
-            DataProperty dataProperty = null)
+            DataProperty? dataProperty = null)
         {
             var dataContract = GetDataContractFor(modelType);
 
@@ -107,7 +107,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
             Type modelType,
             SchemaRepository schemaRepository,
             ParameterInfo parameterInfo,
-            ApiParameterRouteInfo routeInfo)
+            ApiParameterRouteInfo? routeInfo)
         {
             var dataContract = GetDataContractFor(modelType);
 
@@ -131,8 +131,8 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
 
                 if (defaultValue != null)
                 {
-                    var defaultAsJson = dataContract.JsonConverter(defaultValue);
-                    schema.Default = OpenApiAnyFactory.CreateFromJson(defaultAsJson);
+                    var defaultAsJson = dataContract.JsonConverter?.Invoke(defaultValue);
+                    schema.Default = defaultAsJson == null ? null : OpenApiAnyFactory.CreateFromJson(defaultAsJson);
                 }
 
                 schema.ApplyValidationAttributes(customAttributes);
@@ -169,7 +169,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
             return _serializerDataContractResolver.GetDataContractForType(effectiveType);
         }
 
-        private bool IsBaseTypeWithKnownTypesDefined(DataContract dataContract, out IEnumerable<DataContract> knownTypesDataContracts)
+        private bool IsBaseTypeWithKnownTypesDefined(DataContract dataContract, out IEnumerable<DataContract>? knownTypesDataContracts)
         {
             knownTypesDataContracts = null;
 
@@ -261,7 +261,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
                 : schemaFactory();
         }
 
-        private bool TryGetCustomTypeMapping(Type modelType, out Func<OpenApiSchema> schemaFactory)
+        private bool TryGetCustomTypeMapping(Type modelType, out Func<OpenApiSchema>? schemaFactory)
         {
             return _generatorOptions.CustomTypeMappings.TryGetValue(modelType, out schemaFactory)
                 || (modelType.IsConstructedGenericType && _generatorOptions.CustomTypeMappings.TryGetValue(modelType.GetGenericTypeDefinition(), out schemaFactory));
@@ -293,9 +293,9 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
             {
                 schema.Enum = dataContract.UnderlyingType.GetEnumValues()
                     .Cast<object>()
-                    .Select(value => dataContract.JsonConverter(value))
+                    .Select(value => dataContract.JsonConverter?.Invoke(value))
                     .Distinct()
-                    .Select(valueAsJson => OpenApiAnyFactory.CreateFromJson(valueAsJson))
+                    .Select(valueAsJson => valueAsJson == null ? null : OpenApiAnyFactory.CreateFromJson(valueAsJson))
                     .ToList();
             }
 

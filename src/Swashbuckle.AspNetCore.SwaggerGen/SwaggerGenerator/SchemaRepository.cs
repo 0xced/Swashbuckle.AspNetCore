@@ -9,12 +9,12 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
     {
         private readonly Dictionary<Type, string> _reservedIds = new Dictionary<Type, string>();
 
-        public SchemaRepository(string documentName = null)
+        public SchemaRepository(string? documentName = null)
         {
             DocumentName = documentName;
         }
 
-        public string DocumentName { get; }
+        public string? DocumentName { get; }
 
         public Dictionary<string, OpenApiSchema> Schemas { get; private set; } = new Dictionary<string, OpenApiSchema>();
 
@@ -32,9 +32,9 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
             _reservedIds.Add(type, schemaId);
         }
 
-        public bool TryLookupByType(Type type, out OpenApiSchema referenceSchema)
+        public bool TryLookupByType(Type type, out OpenApiSchema? referenceSchema)
         {
-            if (_reservedIds.TryGetValue(type, out string schemaId))
+            if (_reservedIds.TryGetValue(type, out string? schemaId))
             {
                 referenceSchema = new OpenApiSchema
                 {

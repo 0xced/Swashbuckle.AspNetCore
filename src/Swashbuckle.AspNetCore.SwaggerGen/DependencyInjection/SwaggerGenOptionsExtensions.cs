@@ -466,8 +466,8 @@ namespace Microsoft.Extensions.DependencyInjection
         [Obsolete("You can use \"UseOneOfForPolymorphism\", \"UseAllOfForInheritance\" and \"SelectSubTypesUsing\" to configure equivalent behavior")]
         public static void GeneratePolymorphicSchemas(
             this SwaggerGenOptions swaggerGenOptions,
-            Func<Type, IEnumerable<Type>> subTypesResolver = null,
-            Func<Type, string> discriminatorSelector = null)
+            Func<Type, IEnumerable<Type>>? subTypesResolver = null,
+            Func<Type, string>? discriminatorSelector = null)
         {
             swaggerGenOptions.UseOneOfForPolymorphism();
             swaggerGenOptions.UseAllOfForInheritance();

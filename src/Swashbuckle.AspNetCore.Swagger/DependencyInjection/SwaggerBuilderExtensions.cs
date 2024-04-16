@@ -32,7 +32,7 @@ namespace Microsoft.AspNetCore.Builder
         /// </summary>
         public static IApplicationBuilder UseSwagger(
             this IApplicationBuilder app,
-            Action<SwaggerOptions> setupAction = null)
+            Action<SwaggerOptions>? setupAction = null)
         {
             SwaggerOptions options;
             using (var scope = app.ApplicationServices.CreateScope())
@@ -48,7 +48,7 @@ namespace Microsoft.AspNetCore.Builder
         public static IEndpointConventionBuilder MapSwagger(
             this IEndpointRouteBuilder endpoints,
             string pattern = "/swagger/{documentName}/swagger.{extension:regex(^(json|ya?ml)$)}",
-            Action<SwaggerEndpointOptions> setupAction = null)
+            Action<SwaggerEndpointOptions>? setupAction = null)
         {
             if (!RoutePatternFactory.Parse(pattern).Parameters.Any(x => x.Name == "documentName"))
             {

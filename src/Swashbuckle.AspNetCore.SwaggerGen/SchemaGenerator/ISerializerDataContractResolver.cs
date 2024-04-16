@@ -14,8 +14,8 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
         public static DataContract ForPrimitive(
             Type underlyingType,
             DataType dataType,
-            string dataFormat,
-            Func<object, string> jsonConverter = null)
+            string? dataFormat,
+            Func<object, string?>? jsonConverter = null)
         {
             return new DataContract(
                 underlyingType: underlyingType,
@@ -26,8 +26,8 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
 
         public static DataContract ForArray(
             Type underlyingType,
-            Type itemType,
-            Func<object, string> jsonConverter = null)
+            Type? itemType,
+            Func<object, string?>? jsonConverter = null)
         {
             return new DataContract(
                 underlyingType: underlyingType,
@@ -38,9 +38,9 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
 
         public static DataContract ForDictionary(
             Type underlyingType,
-            Type valueType,
-            IEnumerable<string> keys = null,
-            Func<object, string> jsonConverter = null)
+            Type? valueType,
+            IEnumerable<string>? keys = null,
+            Func<object, string?>? jsonConverter = null)
         {
             return new DataContract(
                 underlyingType: underlyingType,
@@ -53,10 +53,10 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
         public static DataContract ForObject(
             Type underlyingType,
             IEnumerable<DataProperty> properties,
-            Type extensionDataType = null,
-            string typeNameProperty = null,
-            string typeNameValue = null,
-            Func<object, string> jsonConverter = null)
+            Type? extensionDataType = null,
+            string? typeNameProperty = null,
+            string? typeNameValue = null,
+            Func<object, string?>? jsonConverter = null)
         {
             return new DataContract(
                 underlyingType: underlyingType,
@@ -70,7 +70,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
 
         public static DataContract ForDynamic(
             Type underlyingType,
-            Func<object, string> jsonConverter = null)
+            Func<object, string?>? jsonConverter = null)
         {
             return new DataContract(
                 underlyingType: underlyingType,
@@ -95,16 +95,16 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
         private DataContract(
             Type underlyingType,
             DataType dataType,
-            string dataFormat = null,
-            IEnumerable<object> enumValues = null,
-            Type arrayItemType = null,
-            Type dictionaryValueType = null,
-            IEnumerable<string> dictionaryKeys = null,
-            IEnumerable<DataProperty> objectProperties = null,
-            Type objectExtensionDataType = null,
-            string objectTypeNameProperty = null,
-            string objectTypeNameValue = null,
-            Func<object, string> jsonConverter = null)
+            string? dataFormat = null,
+            IEnumerable<object>? enumValues = null,
+            Type? arrayItemType = null,
+            Type? dictionaryValueType = null,
+            IEnumerable<string>? dictionaryKeys = null,
+            IEnumerable<DataProperty>? objectProperties = null,
+            Type? objectExtensionDataType = null,
+            string? objectTypeNameProperty = null,
+            string? objectTypeNameValue = null,
+            Func<object, string?>? jsonConverter = null)
         {
             UnderlyingType = underlyingType;
             DataType = dataType;
@@ -119,23 +119,23 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
             ObjectExtensionDataType = objectExtensionDataType;
             ObjectTypeNameProperty = objectTypeNameProperty;
             ObjectTypeNameValue = objectTypeNameValue;
-            JsonConverter = jsonConverter ?? new Func<object, string>(obj => null);
+            JsonConverter = jsonConverter ?? new Func<object, string?>(obj => null);
         }
 
         public Type UnderlyingType { get; }
         public DataType DataType { get; }
-        public string DataFormat { get; }
-        public Type ArrayItemType { get; }
-        public Type DictionaryValueType { get; }
-        public IEnumerable<string> DictionaryKeys { get; }
-        public IEnumerable<DataProperty> ObjectProperties { get; }
-        public Type ObjectExtensionDataType { get; }
-        public string ObjectTypeNameProperty { get; }
-        public string ObjectTypeNameValue { get; }
-        public Func<object, string> JsonConverter { get; }
+        public string? DataFormat { get; }
+        public Type? ArrayItemType { get; }
+        public Type? DictionaryValueType { get; }
+        public IEnumerable<string>? DictionaryKeys { get; }
+        public IEnumerable<DataProperty>? ObjectProperties { get; }
+        public Type? ObjectExtensionDataType { get; }
+        public string? ObjectTypeNameProperty { get; }
+        public string? ObjectTypeNameValue { get; }
+        public Func<object, string?>? JsonConverter { get; }
 
         [Obsolete("Use JsonConverter")]
-        public IEnumerable<object> EnumValues { get; }
+        public IEnumerable<object>? EnumValues { get; }
     }
 
     public enum DataType
@@ -159,7 +159,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
             bool isNullable = false,
             bool isReadOnly = false,
             bool isWriteOnly = false,
-            MemberInfo memberInfo = null)
+            MemberInfo? memberInfo = null)
         {
             Name = name;
             IsRequired = isRequired;
@@ -170,12 +170,12 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
             MemberInfo = memberInfo;
         }
 
-        public string Name { get; } 
+        public string Name { get; }
         public bool IsRequired { get; }
         public bool IsNullable { get; }
         public bool IsReadOnly { get; }
         public bool IsWriteOnly { get; }
         public Type MemberType { get; }
-        public MemberInfo MemberInfo { get; }
+        public MemberInfo? MemberInfo { get; }
     }
 }

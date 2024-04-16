@@ -29,10 +29,7 @@
     TODO Fix warning from Swashbuckle.AspNetCore with dotnet pack
     -->
     <NoWarn>$(NoWarn);NU5128</NoWarn>
-    <!--
-    TODO Go through the code and add nullable annotations
     <Nullable>enable</Nullable>
-    -->
     <PackageIcon></PackageIcon>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/domaindrivendev/Swashbuckle.AspNetCore</PackageProjectUrl>

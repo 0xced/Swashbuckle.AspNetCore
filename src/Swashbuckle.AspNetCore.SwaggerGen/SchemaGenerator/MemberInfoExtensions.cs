@@ -18,7 +18,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
             var attributes = memberInfo.GetCustomAttributes(true)
                 .ToList();
 
-            var metadataTypeAttribute = memberInfo.DeclaringType.GetCustomAttributes(true)
+            var metadataTypeAttribute = memberInfo.DeclaringType?.GetCustomAttributes(true)
                 .OfType<ModelMetadataTypeAttribute>()
                 .FirstOrDefault();
 
@@ -83,7 +83,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
             return false;
         }
 
-        private static object GetNullableAttribute(this MemberInfo memberInfo)
+        private static object? GetNullableAttribute(this MemberInfo memberInfo)
         {
             var nullableAttribute = memberInfo.GetCustomAttributes()
                 .Where(attr => string.Equals(attr.GetType().FullName, NullableAttributeFullTypeName))
@@ -94,13 +94,13 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
 
         private static bool GetNullableFallbackValue(this MemberInfo memberInfo)
         {
-            var declaringTypes = memberInfo.DeclaringType.IsNested
-                ? new Type[] { memberInfo.DeclaringType, memberInfo.DeclaringType.DeclaringType }
-                : new Type[] { memberInfo.DeclaringType };
+            var declaringTypes = memberInfo.DeclaringType?.IsNested == true
+                ? new Type?[] { memberInfo.DeclaringType, memberInfo.DeclaringType.DeclaringType }
+                : new Type?[] { memberInfo.DeclaringType };
 
             foreach (var declaringType in declaringTypes)
             {
-                var attributes = (IEnumerable<object>)declaringType.GetCustomAttributes(false);
+                var attributes = declaringType?.GetCustomAttributes(false) ?? [];
 
                 var nullableContext = attributes
                 .Where(attr => string.Equals(attr.GetType().FullName, NullableContextAttributeFullTypeName))

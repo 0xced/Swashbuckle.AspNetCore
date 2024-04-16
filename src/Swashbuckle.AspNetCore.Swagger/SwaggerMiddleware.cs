@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ namespace Swashbuckle.AspNetCore.Swagger
         private readonly SwaggerOptions _options;
         private readonly TemplateMatcher _requestMatcher;
 #if !NETSTANDARD
-        private readonly TemplateBinder _templateBinder;
+        private readonly TemplateBinder? _templateBinder;
 #endif
 
         public SwaggerMiddleware(
@@ -43,7 +44,7 @@ namespace Swashbuckle.AspNetCore.Swagger
 
         public async Task Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
         {
-            if (!RequestingSwaggerDocument(httpContext.Request, out string documentName, out string extension))
+            if (!RequestingSwaggerDocument(httpContext.Request, out string? documentName, out string? extension))
             {
                 await _next(httpContext);
                 return;
@@ -88,7 +89,7 @@ namespace Swashbuckle.AspNetCore.Swagger
             }
         }
 
-        private bool RequestingSwaggerDocument(HttpRequest request, out string documentName, out string extension)
+        private bool RequestingSwaggerDocument(HttpRequest request, [NotNullWhen(true)] out string? documentName, [NotNullWhen(true)] out string? extension)
         {
             documentName = null;
             extension = null;

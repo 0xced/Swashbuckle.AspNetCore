@@ -35,7 +35,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
 
         public static void ApplyRouteConstraints(this OpenApiSchema schema, ApiParameterRouteInfo routeInfo)
         {
-            foreach (var constraint in routeInfo.Constraints)
+            foreach (var constraint in routeInfo.Constraints ?? [])
             {
                 if (constraint is MinRouteConstraint minRouteConstraint)
                     ApplyMinRouteConstraint(schema, minRouteConstraint);
@@ -72,9 +72,9 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
             }
         }
 
-        public static string ResolveType(this OpenApiSchema schema, SchemaRepository schemaRepository)
+        public static string? ResolveType(this OpenApiSchema schema, SchemaRepository schemaRepository)
         {
-            if (schema.Reference != null && schemaRepository.Schemas.TryGetValue(schema.Reference.Id, out OpenApiSchema definitionSchema))
+            if (schema.Reference != null && schemaRepository.Schemas.TryGetValue(schema.Reference.Id, out OpenApiSchema? definitionSchema))
                 return definitionSchema.ResolveType(schemaRepository);
 
             foreach (var subSchema in schema.AllOf)
@@ -107,7 +107,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
                 { AnnotationsDataType.PostalCode, "postal-code" }
             };
 
-            if (formats.TryGetValue(dataTypeAttribute.DataType, out string format))
+            if (formats.TryGetValue(dataTypeAttribute.DataType, out string? format))
             {
                 schema.Format = format;
             }

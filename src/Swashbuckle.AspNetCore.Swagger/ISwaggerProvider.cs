@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.OpenApi.Models;
@@ -9,8 +9,8 @@ namespace Swashbuckle.AspNetCore.Swagger
     {
         OpenApiDocument GetSwagger(
             string documentName,
-            string host = null,
-            string basePath = null);
+            string? host = null,
+            string? basePath = null);
     }
 
     public class UnknownSwaggerDocument : InvalidOperationException
@@ -18,7 +18,7 @@ namespace Swashbuckle.AspNetCore.Swagger
         public UnknownSwaggerDocument(string documentName, IEnumerable<string> knownDocuments)
             : base(string.Format("Unknown Swagger document - \"{0}\". Known Swagger documents: {1}",
                 documentName,
-                string.Join(",", knownDocuments?.Select(x => $"\"{x}\""))))
+                string.Join(",", knownDocuments.Select(x => $"\"{x}\""))))
         {}
     }
 }

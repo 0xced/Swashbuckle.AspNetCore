@@ -5,7 +5,7 @@ namespace Swashbuckle.AspNetCore.SwaggerGen
 {
     public static class OpenApiAnyFactory
     {
-        public static IOpenApiAny CreateFromJson(string json)
+        public static IOpenApiAny? CreateFromJson(string json)
         {
             try
             {
